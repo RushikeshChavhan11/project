@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Images - Face Recognition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .train-images-container {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #trainStatus {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <section class="hero" style="background-color: #333; color: white; text-align: center; padding: 1rem;">
+            <div style="background-color: #28a745; color: white; padding: 1rem;">
+                <h1 style="font-size: 4rem; margin: 0;">QuiickTracker</h1>
+            </div>
+            <div class="hero-content">
+                <h2>Train Images for Face Recognition</h2>
+                <p>Click the button below to train stored student images.</p>
+            </div>
+        </section>
+    </header>
+
+    <!-- Main Content -->
+    <section class="train-images-container">
+        <button id="trainImagesButton" onclick="trainImages()">🚀 Train Images by CNN</button>
+<div id="trainStatus"></div>
+    </section>
+
+    <script>
+    function trainImages() {
+        document.getElementById("trainStatus").innerHTML = "⏳ Training started...";
+
+    fetch('/train_images', {
+        method: 'POST',  // ✅ Ensure it's a POST request
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})  // ✅ Send an empty JSON body
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            document.getElementById("trainStatus").innerHTML = "✅ Training completed successfully!";
+        } else {
+            document.getElementById("trainStatus").innerHTML = `❌ Error: ${data.message}`;
+        }
+    })
+    .catch(error => {
+        document.getElementById("trainStatus").innerHTML = "⚠ Error training images.";
+        console.error("❌ Error:", error);
+    });
+}
+
+    </script>
+    
+
+</body>
+</html>

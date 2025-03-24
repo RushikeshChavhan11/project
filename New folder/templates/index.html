@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Attendance System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- link CSS using Flask's url_for method -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Image 
+    <img src="{{ url_for('static', filename='images/header.jpg') }}" alt="Header Image" class="header-image"> -->
+    
+    <div style="display: flex; align-items: center; justify-content: space-between; white-space: nowrap; overflow: hidden;">
+        <!-- Logo 1 -->
+            <img src="{{ url_for('static', filename='head/logo1.jpg') }}" alt="Logo 1" style="height: 100px; display: block;">
+    
+        <!-- NAAC Logo -->
+            <img src="{{ url_for('static', filename='head/NAAC_LOGO (2).gif') }}" alt="NAAC Logo" style="height: 100px; margin-left: 2rem; display: block;">
+    
+        <!-- Main Heading -->
+        <div style="flex-grow: 1; text-align: center; margin: 0 1rem;">
+            <h1 style="color: red; font-weight: 500; margin: 0;">GENBA SOPANRAO MOZE COLLEGE OF ENGINEERING, Balewadi</h1>
+            <p style="margin: 0;">Approved by AICTE, Affiliated to SPPU</p>
+        </div>
+    
+        <!-- ISO Image -->
+        <img src="{{ url_for('static', filename='head/iso.png') }}" alt="ISO Logo" style="height: 100px; display: block;">
+    </div>
+    
+    
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>QuiickTracker</h1>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Background Video -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Automated Face Recognition Attendance</h1>
+            <h1>Monitoring System</h1>
+        </div>
+    </section>
+
+    <!-- Features Section with Clickable Cards -->
+    <section class="features">
+        <!-- Add Students -->
+        <a href="{{ url_for('add_student') }}" class="feature-card" data-aos="fade-up">
+            <i class="material-icons">person_add</i>
+            <h3>Add Students</h3>
+            <p>Easily capture student details and facial images to build your database.</p>
+        </a>
+
+        <!-- Real-Time Attendance -->
+        <a href="{{ url_for('real_time_attendance') }}" class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <i class="material-icons">person_search</i>
+            <h3>Real-Time Attendance</h3>
+            <p>Get immediate attendance updates through accurate facial recognition.</p>
+        </a>
+
+        <!-- Train Images -->
+
+        <!-- <a href="{{ url_for('train_images') }}" class="feature-card" data-aos="fade-up" data-aos-delay="400">
+            <i class="material-icons">receipt_long</i>
+            <h3>Train Images</h3>
+            <p>Get train images of student </p>
+        </a> -->
+
+            <!-- Train Images -->
+            <a href="{{ url_for('train_images') }}" class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="material-icons">camera_alt</i>
+                <h3>Train Images</h3>
+                <p>Click here to train stored student images.</p>
+            </a>
+
+    </script>
+       
+       <!-- Generate Reports -->
+       <a href="{{ url_for('generate_reports') }}" class="feature-card" data-aos="fade-up" data-aos-delay="400">
+        <i class="material-icons">receipt_long</i>
+        <h3>Attendance Details</h3>
+        <p>Get attendance updates of student </p>
+        </a>
+        
+
+        <!-- Generate Reports -->
+        <a href="{{ url_for('graph') }}" class="feature-card" data-aos="fade-up" data-aos-delay="400">
+            <i class="material-icons">insights</i>
+            <h3>Report Analysis</h3>
+            <p>Instantly generate reports on attendance patterns and trends.</p>
+        </a>
+    </section>
+
+    <!-- Footer Section 
+    <footer>
+        <p>© 2025 Face Recognition Attendance System | All Rights Reserved</p>
+    </footer>
+-->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Reports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='attendance.js') }}" defer></script>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Container Layout */
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 30px;
+            gap: 20px;
+        }
+
+        /* Left Panel (Filters) */
+        .left-panel {
+            width: 35%;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .left-panel h2 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .search-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .search-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .download-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .download-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        /* Right Panel (Attendance Display) */
+        .right-panel {
+            width: 60%;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .right-panel h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        /* Attendance Display */
+        .attendance-display {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fafafa;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Borders for each field */
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd; /* Border for each field */
+            text-align: center;
+        }
+
+        /* Header Background */
+        th {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Attendance Status Styling */
+        .present {
+            color: green;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* No Data Message */
+        .no-data {
+            font-size: 16px;
+            color: red;
+            text-align: center;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .left-panel, .right-panel {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    Header Section
+    <section class="hero">
+        <h1>QuiickTracker - Attendance Reports</h1>
+    </section>
+
+    <div class="container">
+        Left Panel: Filters
+        <div class="left-panel">
+            <h2>🔍 Filter Attendance</h2>
+
+            <div class="form-group">
+                <label for="subject">Subject Name:</label>
+                <input type="text" id="subject" placeholder="Enter Subject Name">
+            </div>
+
+            <div class="form-group">
+                <label for="student">Student Name or ID:</label>
+                <input type="text" id="student" placeholder="Enter Student Name or ID">
+            </div>
+
+            <div class="form-group">
+                <label for="date">Select Date:</label>
+                <input type="date" id="date">
+            </div>
+
+            <div class="button-group">
+                <button class="search-btn" onclick="fetchAttendance()">🔍 Search</button>
+                <button class="download-btn" onclick="downloadCSV()">📥 Download CSV</button>
+            </div>
+        </div>
+
+        Right Panel: Display Attendance
+        <div class="right-panel">
+            <h2>📋 Attendance Details</h2>
+            <div class="attendance-display">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance-table">
+                        <tr>
+                            <td colspan="6" class="no-data"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filters .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        select, input {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .attendance-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th, .attendance-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .attendance-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+        <header>
+        <section class="hero">
+            <div style="background-color: #28a745; color: white; padding: 1rem;">
+                <h1 style="font-size: 5rem; margin: 0;">QuiickTracker</h1>
+            </div>
+            <div class="hero-content">
+                <h1>Automated Face Recognition Attendance</h1>
+                <h3>Monitoring System</h3>
+            </div>
+        </section>
+    </header>
+
+    <div class="container">
+        <h2>📊 Attendance Details</h2>
+
+        <!-- ✅ Filters Section -->
+        <div class="filters">
+            <div class="form-group">
+                <label for="course_name">Course Name:</label>
+                <select id="course_name">
+                    <option value="">-- Select Course --</option>
+                    <option value="B.Tech">B.Tech</option>
+                    <option value="M.Tech">M.Tech</option>
+                    <option value="BCA">BCA</option>
+                    <option value="MCA">MCA</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="year">Year of Study:</label>
+                <select id="year">
+                    <option value="">-- Select Year --</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+            <label for="subject">Subject:</label>
+            <select id="subject">
+            </select>
+            </div>
+                
+            
+
+            <div class="form-group">
+                <label for="student">Student Name / ID:</label>
+                <input type="text" id="student" placeholder="Enter Student Name or ID">
+            </div>
+
+            <div class="form-group">
+                <label for="from_date">From Date:</label>
+                <input type="date" id="from_date">
+            </div>
+
+            <div class="form-group">
+                <label for="to_date">To Date:</label>
+                <input type="date" id="to_date">
+            </div>
+
+            <button onclick="fetchAttendance()">🔍 Search</button>
+            <button onclick="downloadCSV()">📥 Download CSV</button>
+        </div>
+
+        <!-- ✅ Attendance Table -->
+        <div id="attendance-container">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Year</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-body">
+                    <!-- Attendance data will be inserted dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchSubjects() {
+            const response = await fetch('/get_subjects');
+            const subjects = await response.json();
+            const subjectDropdown = document.getElementById('subject');
+
+            subjects.forEach(subject => {
+                let option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectDropdown.appendChild(option);
+            });
+        }
+        function fetchAttendance() {
+    const course_name = document.getElementById('course_name').value;
+    const year = document.getElementById('year').value;
+    const subject = document.getElementById('subject').value; // ✅ FIXED: Get the selected value
+    const student = document.getElementById('student').value.trim();
+    const from_date = document.getElementById('from_date').value;
+    const to_date = document.getElementById('to_date').value;
+
+    if (!course_name && !year && !subject && !student && !from_date && !to_date) {
+        alert("❌ Please select at least one filter!");
+        return;
+    }
+
+    fetch(`/get_attendance?course_name=${course_name}&year=${year}&subject=${encodeURIComponent(subject)}&student_id=${student}&from_date=${from_date}&to_date=${to_date}`)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("attendance-body");
+            tableBody.innerHTML = "";
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="no-data">⚠ No records found!</td></tr>`;
+                return;
+            }
+
+            data.forEach(record => {
+                const row = `<tr>
+                    <td>${record.student_id}</td>
+                    <td>${record.name}</td>
+                    <td>${record.course_name}</td>
+                    <td>${record.year}</td>
+                    <td>${record.subject}</td>
+                    <td>${record.date}</td>
+                    <td>${record.status}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error("❌ Error fetching attendance:", error));
+}
+
+        function downloadCSV() {
+            window.location.href = "/download_attendance";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ Attendance script loaded!");
+
+    async function fetchSubjects() {
+        try {
+            const response = await fetch('/get_subjects');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const subjects = await response.json();
+            console.log("🔹 Subjects Fetched:", subjects);
+
+            const subjectDropdown = document.getElementById('subject');
+
+            // ✅ Clear previous options & Add default placeholder
+            subjectDropdown.innerHTML = `<option value="">-- Select Subject --</option>`;
+
+            if (!subjects || subjects.length === 0) {
+                console.warn("⚠ No subjects found in the database.");
+                return;
+            }
+
+            // ✅ Populate dropdown with subjects from DB
+            subjects.forEach(subject => {
+                let option = document.createElement("option");
+                option.value = subject;
+                option.textContent = subject;
+                subjectDropdown.appendChild(option);
+            });
+
+            console.log("✅ Subject dropdown updated successfully!");
+        } catch (error) {
+            console.error("❌ Error fetching subjects:", error);
+        }
+    }
+
+    // ✅ Call the function to fetch subjects on page load
+    fetchSubjects();
+});
+    </script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,422 @@
+/* Reset some basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set the default font family */
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 0rem;
+    color: white;
+}
+
+.navbar .logo {
+    flex: 1;  /* Allow the logo to take up available space */
+    display: flex;
+   /*  justify-content: center; /* Horizontally center the logo */
+    align-items: center; /* Vertically center the logo */
+    margin-top: 0;  /* Removes top margin */
+    margin-bottom: 0;  /* Reduces bottom margin */
+    
+}
+
+.navbar .logo h1 {
+    font-size: 5rem;
+    color: white; /* Change text color to red */
+    margin: 0;
+    text-align: center; /* Ensure the text is centered in its own container */
+    width: 100%;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}
+
+/* Hero section styles */
+.hero {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 0rem 1rem;
+    margin-top: 0rem;
+}
+
+.hero .hero-content h1 {
+    font-size: 3rem;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}
+
+.hero .hero-content p {
+    font-size: 1.2rem;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}
+
+.hero .btn {
+    background-color: #3498db;
+    color: white;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.hero .btn:hover {
+    background-color: #2980b9;
+}
+
+/* Features section styles */
+.features {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 2rem;
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: rgba(0, 0, 0, 0.988);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(4, 4, 4, 0.985);
+    flex: 1;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-card i {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    font-size: 1.8rem;
+    color: #828181;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #878585;
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Image frame for images */
+.image-frame {
+    width: 300px;
+    height: 300px;
+    border: 5px solid #333;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Responsive Design: Adjust layout for smaller screens */
+@media screen and (max-width: 768px) {
+    .features {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .hero .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+.add-student-form {
+    width: 50%;  /* Adjust the form width */
+    margin: 50px auto;  /* Centers the form with top/bottom margin */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.add-student-form input,
+.add-student-form button {
+    width: 100%;  /* Makes the form inputs take up the full width of the form */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-student-form .button-container {
+    display: flex;
+    justify-content: center;  /* Centers the button horizontally */
+}
+
+.add-student-form button {
+    width: auto;  /* Makes the button width fit its content */
+    padding: 12px 30px;  /* Adjusts the button padding for a better look */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.add-student-form button:hover {
+    background-color: #45a049;
+}
+
+
+
+
+/* General reset and body styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    padding-top: 50px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+}
+
+header .logo h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Navbar Styles */
+nav ul {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+nav ul li {
+    list-style: none;
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main Section */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.attendance-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.subject-list {
+    width: 30%;
+}
+
+.subject {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.subject input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.subject button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.subject button:hover {
+    background-color: #45a049;
+}
+
+.camera-container {
+    width: 60%;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#videoElement {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    margin-bottom: 15px;
+}
+
+#captureButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#captureButton:hover {
+    background-color: #45a049;
+}
+
+.attendance-status {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    color: #333;
+}
+
+.feature-card {
+    background-color: rgba(0, 0, 0, 0.988);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(4, 4, 4, 0.985);
+    flex: 1;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    cursor: pointer; /* 🖐️ Changes cursor to hand */
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    background-color: #f0f0f0;
+    cursor: pointer; /* 🖐️ Ensures palm cursor appears on hover */
+}
+
+.train-images-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#trainImagesButton {
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#trainImagesButton:hover {
+    background-color: #218838;
+}
+
+#trainStatus {
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+

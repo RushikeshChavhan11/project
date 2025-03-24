@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student - Face Recognition Attendance System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <section class="hero">
+            <div style="background-color: #28a745; color: white; padding: 1rem;">
+                <h1 style="font-size: 5rem; margin: 0;">QuiickTracker</h1>
+            </div>
+            <div class="hero-content">
+                <h1>Automated Face Recognition Attendance</h1>
+                <h3>Monitoring System</h3>
+            </div>
+        </section>
+    </header>
+
+    <section class="add-student-form">
+        <h2>Add New Student</h2>
+        <form id="studentForm" action="{{ url_for('add_student') }}" method="POST">
+            <div class="form-group">
+                <label for="name">Student Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="student_id">Student ID:</label>
+                <input type="text" id="student_id" name="student_id" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course_name">Course Name:</label>
+                <input type="text" id="course_name" name="course_name" required>
+            </div>
+
+            <!-- ✅ Year of Study as Dropdown -->
+            <div class="form-group">
+                <label for="year">Year of Study:</label>
+                <select id="year" name="year" required>
+                    <option value="">-- Select Year --</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Capture Images:</label>
+                <button type="button" id="captureButton">Open Webcam</button>
+            </div>
+
+            <!-- Webcam & Captured Images -->
+            <div id="video-container" style="display: none;">
+                <video id="video" width="320" height="240" autoplay></video>
+                <button type="button" id="takePhotoButton" disabled>Take Photos</button>
+                <div id="capturedImagesContainer"></div>
+                <input type="hidden" id="capturedImages" name="captured_images">
+            </div>
+
+            <button type="submit">Add Student</button>
+        </form>
+
+        <!-- Home Button -->
+<div style="text-align: right; margin: 10px;">
+    <a href="{{ url_for('index') }}" style="text-decoration: none;">
+        <button style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+            🏠 Home
+        </button>
+    </a>
+</div>
+
+    </section>
+
+    <script>
+        const captureButton = document.getElementById('captureButton');
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('video');
+        const takePhotoButton = document.getElementById('takePhotoButton');
+        const capturedImagesContainer = document.getElementById('capturedImagesContainer');
+        const capturedImagesInput = document.getElementById('capturedImages');
+        let stream;
+        let images = [];
+        let count = 0;
+
+        // ✅ Open Webcam
+        captureButton.addEventListener('click', async () => {
+            try {
+                videoContainer.style.display = 'block';
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                takePhotoButton.disabled = false; // Enable capture button
+            } catch (error) {
+                console.error("❌ Webcam Error:", error);
+                alert("❌ Unable to access the webcam. Please check permissions.");
+            }
+        });
+
+        // ✅ Capture 5 Images Automatically
+        takePhotoButton.addEventListener('click', async () => {
+            count = 0;
+            images = [];
+            capturedImagesContainer.innerHTML = '';
+
+            const captureInterval = setInterval(() => {
+                if (count < 5) {  // ✅ Capture 5 images
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 160; // ✅ Resize
+                    canvas.height = 120;
+                    const context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    const imageData = canvas.toDataURL('image/jpeg', 0.6);
+                    images.push(imageData);
+
+                    // ✅ Show Preview
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imageData;
+                    imgElement.width = 50;
+                    imgElement.height = 50;
+                    imgElement.style.margin = "2px";
+                    capturedImagesContainer.appendChild(imgElement);
+
+                    count++;
+                } else {
+                    clearInterval(captureInterval);
+                    capturedImagesInput.value = JSON.stringify(images);
+
+                    // ✅ Stop Webcam
+                    stream.getTracks().forEach(track => track.stop());
+                    videoContainer.style.display = 'none';
+
+                    alert('✅ 5 Images Captured Successfully!');
+                }
+            }, 500); // Capture every 500ms
+        });
+    </script>
+
+</body>
+</html>
