@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Attendance logs · QuiickTracker{% endblock %}
+{% block page_heading %}Attendance logs{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><p class="muted">Search, filter, and export saved attendance records.</p></div><div class="button-row"><a class="button button-secondary" href="{{ url_for('main.export_csv', **request.args) }}">↓ CSV</a><a class="button button-secondary" href="{{ url_for('main.export_pdf', **request.args) }}">↓ PDF</a><a class="button button-primary" href="{{ url_for('main.capture_attendance') }}">＋ Mark attendance</a></div></div>
+<section class="panel"><form method="get" class="filter-grid">
+  <label>Subject<input name="subject" value="{{ filters.get('subject','') }}" placeholder="Any subject"></label>
+  <label>Course<select name="course"><option value="">All courses</option>{% for course in courses %}<option value="{{ course }}" {% if filters.get('course') == course %}selected{% endif %}>{{ course }}</option>{% endfor %}</select></label>
+  <label>Year<select name="year"><option value="">All years</option>{% for year in years %}<option value="{{ year }}" {% if filters.get('year') == year %}selected{% endif %}>{{ year }}</option>{% endfor %}</select></label>
+  <label>Student ID<input name="student_id" value="{{ filters.get('student_id','') }}" placeholder="Any ID"></label>
+  <label>From<input type="date" name="date_from" value="{{ filters.get('date_from','') }}"></label>
+  <label>To<input type="date" name="date_to" value="{{ filters.get('date_to','') }}"></label>
+  <div class="filter-actions"><button class="button button-primary" type="submit">Apply filters</button><a class="button button-ghost" href="{{ url_for('main.attendance') }}">Reset</a></div>
+</form>
+<div class="panel-heading table-title"><div><p class="eyebrow">RECORDS</p><h2>Attendance history</h2></div><span class="result-count">Showing up to 500 records</span></div>
+{% if records %}<div class="table-wrap"><table><thead><tr><th>STUDENT</th><th>COURSE / YEAR</th><th>SUBJECT</th><th>DATE</th><th>TIME</th><th>MATCH SCORE</th><th>STATUS</th></tr></thead><tbody>{% for row in records %}<tr><td><div class="student-cell"><span class="table-avatar">{{ row.student.name[:1]|upper }}</span><span><strong>{{ row.student.name }}</strong><small>{{ row.student.student_id }}</small></span></div></td><td>{{ row.student.course_name }}<small class="cell-sub">{{ row.student.year }}</small></td><td>{{ row.subject }}</td><td>{{ row.session_date.strftime('%d %b %Y') }}</td><td>{{ row.captured_at.strftime('%I:%M:%S %p') }}</td><td class="mono">{{ '%.3f'|format(row.similarity) }}</td><td><span class="status status-present">{{ row.status }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">▤</div><strong>No matching records</strong><p>Try changing the filters or mark attendance for a class.</p></div>{% endif %}</section>
+{% endblock %}

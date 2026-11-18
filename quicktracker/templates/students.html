@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Students · QuiickTracker{% endblock %}
+{% block page_heading %}Students{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><p class="muted">Maintain student details and the images used to build the recognition gallery.</p></div><a class="button button-primary" href="{{ url_for('main.add_student') }}">＋ Add student</a></div>
+<section class="panel">
+  <form class="toolbar" method="get"><div class="search-box"><span>⌕</span><input name="q" value="{{ search }}" placeholder="Search by name, ID, or course"></div><button class="button button-secondary" type="submit">Search</button>{% if search %}<a class="text-link" href="{{ url_for('main.students') }}">Clear</a>{% endif %}<span class="toolbar-spacer"></span><span class="result-count">{{ students|length }} student(s)</span></form>
+  {% if students %}<div class="table-wrap"><table><thead><tr><th>STUDENT</th><th>COURSE</th><th>YEAR</th><th>IMAGES</th><th>FACE GALLERY</th><th></th></tr></thead><tbody>{% for student in students %}<tr><td><div class="student-cell"><span class="table-avatar">{{ student.name[:1]|upper }}</span><span><strong>{{ student.name }}</strong><small>{{ student.student_id }}</small></span></div></td><td>{{ student.course_name }}</td><td>{{ student.year }}</td><td>{{ student.images|length }}</td><td>{% if student.embeddings %}<span class="status status-present">Trained</span>{% else %}<span class="status status-pending">Pending</span>{% endif %}</td><td><form method="post" action="{{ url_for('main.delete_student', student_pk=student.id) }}" onsubmit="return confirm('Delete this student and all associated attendance records?')"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="link-danger" type="submit">Delete</button></form></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">♙</div><strong>No students found</strong><p>Register students to start building your attendance directory.</p><a class="button button-primary" href="{{ url_for('main.add_student') }}">Add first student</a></div>{% endif %}
+</section>
+{% endblock %}

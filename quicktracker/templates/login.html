@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Sign in · QuiickTracker{% endblock %}
+{% block auth_content %}
+<div class="auth-page">
+  <div class="auth-decoration"><div class="auth-orbit orbit-one"></div><div class="auth-orbit orbit-two"></div><div class="auth-hero-copy"><div class="brand-mark large">Q</div><p class="eyebrow light">SMARTER CAMPUS OPERATIONS</p><h1>Attendance,<br><em>without the roll call.</em></h1><p class="auth-subtitle">A focused workspace for student registration, face matching, attendance records, and insights.</p></div><div class="auth-foot">QUIICKTRACKER <span>·</span> SECURE WORKSPACE</div></div>
+  <div class="auth-panel"><div class="auth-card"><div class="brand-mark small">Q</div><p class="eyebrow">ADMINISTRATOR ACCESS</p><h2>Welcome back</h2><p class="muted">Sign in to continue to your attendance dashboard.</p>
+    <form method="post" class="stack-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Username<input name="username" type="text" autocomplete="username" required autofocus placeholder="Enter username"></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required placeholder="Enter password"></label>
+      <label class="remember-row"><input type="checkbox" name="remember"> Keep me signed in</label>
+      <button class="button button-primary full-width" type="submit">Sign in <span>→</span></button>
+    </form>
+    <p class="auth-help">First run? Create your administrator with <code>flask --app app create-admin</code>.</p>
+  </div><div class="auth-copyright">QuiickTracker · Academic attendance monitoring</div></div>
+</div>
+{% endblock %}

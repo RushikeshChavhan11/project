@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Analytics · QuiickTracker{% endblock %}
+{% block page_heading %}Analytics{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><p class="muted">A 14-day view of attendance volume for the selected course, year, and subject.</p></div><a class="button button-secondary" href="{{ url_for('main.export_csv', subject=selected_subject, course=selected_course, year=selected_year, date_from=start_date.isoformat(), date_to=end_date.isoformat()) }}">↓ Export records</a></div>
+<section class="panel"><form method="get" class="filter-grid analytics-filter">
+<label>Subject<select name="subject"><option value="">All subjects</option>{% for s in subjects %}<option value="{{ s }}" {% if selected_subject == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+<label>Course<select name="course"><option value="">All courses</option>{% for c in courses %}<option value="{{ c }}" {% if selected_course == c %}selected{% endif %}>{{ c }}</option>{% endfor %}</select></label>
+<label>Year<select name="year"><option value="">All years</option>{% for y in years %}<option value="{{ y }}" {% if selected_year == y %}selected{% endif %}>{{ y }}</option>{% endfor %}</select></label>
+<div class="filter-actions"><button class="button button-primary" type="submit">Update view</button><a class="button button-ghost" href="{{ url_for('main.analytics') }}">Reset</a></div>
+</form></section>
+<section class="stats-grid analytics-stats"><article class="stat-card"><div class="stat-caption">ATTENDANCE RECORDS</div><div class="stat-number">{{ total_records }}</div><div class="stat-foot">Between {{ start_date.strftime('%d %b') }} and {{ end_date.strftime('%d %b') }}</div></article><article class="stat-card"><div class="stat-caption">STUDENTS IN FILTER</div><div class="stat-number">{{ total_students }}</div><div class="stat-foot">Current directory size for this filter</div></article><article class="stat-card"><div class="stat-caption">AVG. ATTENDANCE RECORDS / ACTIVE DAY</div><div class="stat-number">{{ '%.1f'|format(average) }}</div><div class="stat-foot">Mean of days with at least one record</div></article></section>
+<section class="panel chart-panel"><div class="panel-heading"><div><p class="eyebrow">TREND ANALYSIS</p><h2>Daily attendance</h2></div><span class="chart-period">LAST 14 DAYS</span></div><div class="chart-frame"><img src="data:image/png;base64,{{ chart }}" alt="Daily attendance line chart"></div><div class="chart-note">Counts represent saved attendance records. They are not an attendance percentage unless compared with the actual class roster for each session.</div></section>
+{% endblock %}

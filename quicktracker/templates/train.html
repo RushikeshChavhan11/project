@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Train images · QuiickTracker{% endblock %}
+{% block page_heading %}Train images{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><p class="muted">Generate a normalized face embedding for every student using the registered image set.</p></div><a class="text-link" href="{{ url_for('main.students') }}">Manage students →</a></div>
+<section class="stats-grid compact-stats"><article class="stat-card"><div class="stat-caption">STUDENTS</div><div class="stat-number">{{ student_count }}</div></article><article class="stat-card"><div class="stat-caption">SOURCE IMAGES</div><div class="stat-number">{{ image_count }}</div></article><article class="stat-card"><div class="stat-caption">GALLERY PROFILES</div><div class="stat-number">{{ trained_count }}</div></article></section>
+<section class="panel train-panel"><div class="train-art"><div class="scan-ring"><span>◈</span></div></div><div class="train-copy"><p class="eyebrow">EMBEDDING GALLERY BUILDER</p><h2>Prepare the recognition model</h2><p>The application processes saved images, detects and aligns the largest face in each image, extracts a 128-dimensional SFace vector, and averages the valid vectors into one student profile.</p><div class="pipeline"><span>Image set</span><b>→</b><span>YuNet detection</span><b>→</b><span>SFace embedding</span><b>→</b><span>Gallery</span></div>
+{% if missing_models %}<div class="notice notice-warning"><strong>Model files not found</strong><span>Run <code>python scripts/download_models.py</code> from the project folder, then refresh this page.</span><ul>{% for path in missing_models %}<li>{{ path }}</li>{% endfor %}</ul></div>{% else %}<div class="notice notice-success"><strong>Face models are ready</strong><span>YuNet and SFace ONNX models were found in your model directory.</span></div>{% endif %}
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button button-primary" type="submit" {% if missing_models or student_count == 0 %}disabled{% endif %}>Build / refresh gallery <span>→</span></button></form>
+<p class="micro-note">This stage builds an embedding gallery; it does not train a new CNN, GNN, or Transformer network. Recognition threshold: {{ '%.3f'|format(threshold) }} (configurable).</p></div></section>
+{% endblock %}
